@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import logo from "../image/navbaricon1.PNG";
+import logo from "../image/navbaricon2.PNG";
 import { AuthContext } from "../Auth/AuthContext";
 import axios from "axios";
 // import GoogleLogin from "react-google-login";
@@ -86,11 +86,11 @@ const Navbar = () => {
         <img
           src={logo}
           alt=""
-          width="30"
-          height="24"
+          width="225"
+          // height="24"
           className="d-inline-block align-top mr-2 mt-1"
         ></img>
-        Hospital Management System
+      
       </Link>
       <button
         className="navbar-toggler"
