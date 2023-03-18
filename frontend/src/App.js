@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Home from "./Pages/Home";
 import DoctorLogin from "./Pages/DoctorLogin";
+import doctorregistration from "./Pages/DoctorRegistration";
 import DoctorDashboard from "./Pages/DoctorDashboard";
 import PaitentDashboard from "./Pages/PaitentDashboard";
 import Error from "./Pages/Error";
@@ -24,6 +25,7 @@ import DocAppointments from "./Doctor/PaymentHistory";
 import AppointmentStatus from "./Patient/AppointmentStatus";
 import Pfeedback from './Patient/Feedback';
 import FeedbackDetails from './Doctor/FeedbackDetails';
+import DoctorRegistration from "./Pages/DoctorRegistration";
 
 function App() {
 	const [token, setToken] = useState(window.localStorage.getItem("token"));
@@ -74,51 +76,61 @@ function App() {
 	}, []);
 
 	return apiLoaded ? (
-		<Router>
-			<AuthContext.Provider value={{ token, setToken, googleId, setGoogleId }}>
-				<Switch>
-					<Route exact path="/" component={Home} />
-					<Route exact path="/doctorlogin" component={DoctorLogin} />
-					<Route exact path="/doctor" component={DoctorDashboard} />
-					<Route exact path="/patient/searchdoctor" component={SearchDoctor} />
-					<Route exact path="/patient" component={PaitentDashboard} />
-					<Route exact path="/patient/update-phone" component={PhoneNumber} />
-					<Route
-						exact
-						path="/patient/previousappointments"
-						component={PerviousAppointments}
-					/>
-					<Route
-						exact
-						path="/doctor/perosnaldetails"
-						component={PersonalDetails}
-					/>
-					<Route
-						exact
-						path="/doctor/payment-history"
-						component={DocAppointments}
-					/>
-					<Route exact path="/doctor/feedback/:id" component={FeedbackDetails} />
+    <Router>
+      <AuthContext.Provider value={{ token, setToken, googleId, setGoogleId }}>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/doctorlogin" component={DoctorLogin} />
+          <Route exact path="/doctorregistration" component={DoctorRegistration} />
+          <Route exact path="/doctor" component={DoctorDashboard} />
+          <Route exact path="/patient/searchdoctor" component={SearchDoctor} />
+          <Route exact path="/patient" component={PaitentDashboard} />
+          <Route exact path="/patient/update-phone" component={PhoneNumber} />
+          <Route
+            exact
+            path="/patient/previousappointments"
+            component={PerviousAppointments}
+          />
 
-					<Route exact path="/patient/selectdate" component={Selectdate} />
-					<Route exact path="/patient/book-slot" component={BookingSlots} />
-					<Route exact path="/patient/payment" component={Payment} />
-					<Route exact path="/patient/appointment-status" component={AppointmentStatus} />
-					<Route exact path="/patient/feedback/:id" component={Pfeedback} />
+          <Route
+            exact
+            path="/doctor/perosnaldetails"
+            component={PersonalDetails}
+          />
+          <Route
+            exact
+            path="/doctor/payment-history"
+            component={DocAppointments}
+          />
+          <Route
+            exact
+            path="/doctor/feedback/:id"
+            component={FeedbackDetails}
+          />
 
-					<Route path="*">
-						<Error />
-					</Route>
-				</Switch>
-			</AuthContext.Provider>
-		</Router>
-	) : (
-		<div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-			<Spinner animation="border" variant="danger" role="status">
-				<span className="sr-only">Loading...</span>
-			</Spinner>
-		</div>
-	);
+          <Route exact path="/patient/selectdate" component={Selectdate} />
+          <Route exact path="/patient/book-slot" component={BookingSlots} />
+          <Route exact path="/patient/payment" component={Payment} />
+          <Route
+            exact
+            path="/patient/appointment-status"
+            component={AppointmentStatus}
+          />
+          <Route exact path="/patient/feedback/:id" component={Pfeedback} />
+
+          <Route path="*">
+            <Error />
+          </Route>
+        </Switch>
+      </AuthContext.Provider>
+    </Router>
+  ) : (
+    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+      <Spinner animation="border" variant="danger" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    </div>
+  );
 }
 
 export default App;

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import logo from "../image/navbaricon1.png";
+import logo from "../image/navbaricon1.PNG";
 import { AuthContext } from "../Auth/AuthContext";
 import axios from "axios";
 // import GoogleLogin from "react-google-login";
