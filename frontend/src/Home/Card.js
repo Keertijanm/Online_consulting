@@ -45,6 +45,7 @@ const Card = ({ login = "Doctor", Image, link }) => {
         }
       }
     } catch (err) {
+      console.log("Card.js")
       console.log(`[Google] Some error occurred while signing in! ${err}`);
     }
   }

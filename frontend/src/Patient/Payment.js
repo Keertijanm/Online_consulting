@@ -8,6 +8,7 @@ import StripeCheckoutButton from "react-stripe-checkout";
 import { toast } from "react-toastify";
 import axios from "axios";
 // import { Toast } from "react-toastify/dist/components";
+import ApiCalendar from "react-google-calendar-api";
 
 function getEndDateTime(dateTime) {
   const hrs = (parseInt(dateTime.split("T")[1].split(":")[0]) + 1)
@@ -23,6 +24,20 @@ const Payment = (props) => {
   const history = useHistory();
 
   function createEvent(id, dateTime, doctorEmail) {
+    const config = {
+      apiKey: process.env.REACT_APP_API_KEY,
+      clientId: process.env.REACT_APP_CLIENT_ID,
+      // discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
+      // scope: process.env.REACT_APP_SCOPE,
+      // clientId: process.env.,
+      // apiKey: "<API_KEY>",
+      scope: "https://www.googleapis.com/auth/calendar",
+      discoveryDocs: [
+        "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+      ],
+    };
+
+    const apiCalendar = new ApiCalendar(config);
     var virtualEvent = {
       id: id,
       summary: "Appointment",
@@ -52,31 +67,54 @@ const Payment = (props) => {
       },
     };
 
-    var request = window.gapi.client.calendar.events.insert({
-      calendarId: "primary",
-      resource: virtualEvent,
-      sendUpdates: "all",
-      supportsAttachments: true,
-      conferenceDataVersion: 1,
-    });
+    apiCalendar
+      .createEventWithVideoConference(virtualEvent)
+      .then((result) => {
+        console.log(result);
+        if (result) {
+          // console.log(`AddEvent link : ${event.hangoutLink}, Id : ${id}`)
+          axios
+            .put(
+              `${process.env.REACT_APP_SERVER_URL}/appointments/add-meet-link`,
+              {
+                appointmentId: id,
+                meetLink: result.hangoutLink,
+              }
+            )
+            .then((x) => {
+              console.log(`Updated Meet Link!`);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-    request.execute(function (event) {
-      console.log("Executed!");
+    // var request = window.gapi.client.calendar.events.insert({
+    //   calendarId: "primary",
+    //   resource: virtualEvent,
+    //   sendUpdates: "all",
+    //   supportsAttachments: true,
+    //   conferenceDataVersion: 1,
+    // });
 
-      // Add meet link
-      if (event) {
-        // console.log(`AddEvent link : ${event.hangoutLink}, Id : ${id}`)
-        axios.put(
-          `${process.env.REACT_APP_SERVER_URL}/appointments/add-meet-link`,
-          {
-            appointmentId: id,
-            meetLink: event.hangoutLink
-          }
-        ).then((x) => {
-          console.log(`Updated Meet Link!`);
-        })
-      }
-    });
+    // request.execute(function (event) {
+    //   console.log("Executed!");
+
+    //   // Add meet link
+    // if (event) {
+    //   // console.log(`AddEvent link : ${event.hangoutLink}, Id : ${id}`)
+    //   axios.put(
+    //     `${process.env.REACT_APP_SERVER_URL}/appointments/add-meet-link`,
+    //     {
+    //       appointmentId: id,
+    //       meetLink: event.hangoutLink
+    //     }
+    //   ).then((x) => {
+    //     console.log(`Updated Meet Link!`);
+    //   })
+    // }
+    // });
   }
 
   const { dateId, doctor, slotId } = props.location.data;
@@ -103,24 +141,24 @@ const Payment = (props) => {
   }, []);
 
   const makePayment = async (token) => {
-    const { data } = await Axios.post(
-      `${process.env.REACT_APP_SERVER_URL}/patients/payment`,
-      {
-        token,
-        finalBalnce,
-      }
-    );
+    // const { data } = await Axios.post(
+    //   `${process.env.REACT_APP_SERVER_URL}/patients/payment`,
+    //   {
+    //     token,
+    //     finalBalnce,
+    //   }
+    // );
 
-    if (data) {
-      bookSlot();
-      setFinalBalnce(0);
-      toast("Appointment booked successfully", {
-        type: "success"
-      })
-      history.push("/patient");
-    }
+    // if (data) {
+    bookSlot();
+    setFinalBalnce(0);
+    toast("Appointment booked successfully", {
+      type: "success",
+    });
+    history.push("/patient");
+    // }
 
-    console.log(data);
+    // console.log(data);
   };
 
   return (
@@ -232,22 +270,23 @@ const Payment = (props) => {
                         </tr>
                       </tbody>
                     </table>
-                    <StripeCheckoutButton
+                    {/* <StripeCheckoutButton
                       stripeKey="pk_test_51IabQNSCj4BydkZ3VIEbtfIJoWfSESvGSia3mSOfCYPWiyGxNxyr42IRvpmi8f8WbnhzCYBIZMyshg540TErXG3500fbHzRzLc"
                       token={makePayment}
                       amount={finalBalnce * 100}
                       name="Place Appointment"
                       shippingAddress
                       billingAddress
+                    > */}
+                    <button
+                      type="button"
+                      className="btn btn-success btn-lg btn-block"
+                      onClick={makePayment}
                     >
-                      <button
-                        type="button"
-                        className="btn btn-success btn-lg btn-block"
-                      >
-                        Pay Now&nbsp;&nbsp;&nbsp;
-                        <span className="glyphicon glyphicon-chevron-right" />
-                      </button>
-                    </StripeCheckoutButton>
+                      Submit&nbsp;&nbsp;&nbsp;
+                      <span className="glyphicon glyphicon-chevron-right" />
+                    </button>
+                    {/* </StripeCheckoutButton> */}
                   </div>
                 </div>
               </div>
