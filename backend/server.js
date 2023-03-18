@@ -21,13 +21,13 @@ app.use('/doctors', doctorsRotuer);
 app.use('/appointments', appointmentRouter);
 
 const port = process.env.PORT || 5000;
-let uri = '';
-process.env.NODE_ENV === 'test' ? uri = process.env.ATLAS_URI_TEST : uri = process.env.ATLAS_URI;
-
+const uri = process.env.NODE_ENV === 'test' ? process.env.ATLAS_URI_TEST : process.env.ATLAS_URI;
+console.log("uri", uri)
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false }, (err) => {
     if (!err) {
         console.log("Connection to database successful!");
     }
+    console.log(err)
 });
 
 function getCurrentTime() {

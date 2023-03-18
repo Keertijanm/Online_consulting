@@ -228,5 +228,58 @@ router.route("/payment").post(async (req, res) => {
         });
 })
 
+router.route("/login").get((req, res) => {
+    if (req.body.googleAccessToken) {
+      // gogole-auth
+      const { googleAccessToken, googleId } = req.body;
+  
+      axios
+        .get("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: {
+            Authorization: `Bearer ${googleAccessToken}`,
+          },
+        })
+        .then(async (response) => {
+          const firstName = response.data.given_name;
+          const lastName = response.data.family_name;
+          const email = response.data.email;
+          const picture = response.data.picture;
+          const name =[firstName, lastName].join(" ");
+  
+          const existingUser = await Patient.findOne({ email });
+  
+          if (!existingUser) {
+            const patient = new Patient({
+              googleId,
+              email,
+              name,
+              picture,
+            });
+            await patient.save();
+          }
+          //   return res.status(404).json({ message: "User don't exist!" });
+  
+          const token = jwt.sign(
+            {
+              email,
+              name,
+              id: existingUser._id,
+            },
+            process.env.KEY, 
+			{
+				algorithm: process.env.ALGORITHM,
+			}
+          );
+  
+          res.status(200).json({ result: existingUser, token });
+        })
+        .catch((err) => {
+          return res.json({ message: "Invalid access token!" }).status(400);
+        });
+    } else {
+      return res.json({ message: "Invalid Payload!" }).status(400);
+    }
+  });
+
 
 module.exports = router;

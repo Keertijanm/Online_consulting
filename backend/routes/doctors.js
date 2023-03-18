@@ -47,6 +47,7 @@ router.route("/add").post((req, res) => {
 	const phoneNumber = req.body.phoneNumber;
 	const specialization = req.body.specialization;
 	const feesPerSession = req.body.feesPerSession;
+	const email = req.body.email;
 
 	const newDoctor = new Doctor({
 		username,
@@ -55,6 +56,7 @@ router.route("/add").post((req, res) => {
 		phoneNumber,
 		specialization,
 		feesPerSession,
+		email
 	});
 
 	newDoctor
