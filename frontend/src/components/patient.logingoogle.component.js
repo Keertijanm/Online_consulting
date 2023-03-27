@@ -25,7 +25,7 @@ function LoginGoogle() {
     return (
         <div>
             {!isLoggedIn && <GoogleLogin
-                clientId="365803515308-boj1rpek38kabo6pm4448b869efoe47q.apps.googleusercontent.com"
+                clientId="993256800868-37knomod3kidhcesb9os36dmg1cjrk9i.apps.googleusercontent.com"
                 buttonText="Login"
                 onSuccess={successResponse}
                 onFailure={failureResponse}
