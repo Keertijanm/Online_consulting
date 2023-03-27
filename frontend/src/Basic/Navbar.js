@@ -13,13 +13,13 @@ const Navbar = () => {
 
   async function loginWithGoogle(e) {
     try {
-      await window.gapi.auth2.getAuthInstance().signIn();
+      await window.gapi.auth2.getAuthInstance()?.signIn();
       const auth2 = await window.gapi.auth2.getAuthInstance();
       if (auth2.isSignedIn.get()) {
         console.log("[Google] Signed in successfully!");
         var profile = auth2.currentUser.get();
-        console.log(profile);
         window.localStorage.setItem("token", profile.getAuthResponse().id_token);
+        window.localStorage.setItem("accessToken", profile.getAuthResponse().access_token);
         window.localStorage.setItem("googleId", profile.getId());
 
         const serverRes = await axios.post(
@@ -55,7 +55,7 @@ const Navbar = () => {
     // Different logic for doctor and patient
 
     // Patient logic
-    if (window.gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    if (window.gapi.auth2.getAuthInstance()?.isSignedIn?.get()) {
       window.gapi.auth2.getAuthInstance().signOut().then(() => {
         console.log("[Google] Signed out successfully!");
         window.localStorage.removeItem("token");

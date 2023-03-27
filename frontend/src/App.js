@@ -44,7 +44,7 @@ function App() {
 						apiKey: process.env.REACT_APP_API_KEY,
 						clientId: process.env.REACT_APP_CLIENT_ID,
 						discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
-						scope: process.env.REACT_APP_SCOPE,
+						scope: `profile,https://www.googleapis.com/auth/calendar`
 					})
 					.then(
 						function () {

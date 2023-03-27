@@ -9,10 +9,13 @@ const patientSchema = new Schema({
         unique: true
     },
     email : {
-        type: String
+        type: String,
+        required: true,
+        unique: true
     },
     name: {
-        type: String
+        type: String,
+        required: true,
     },
     picture: {
         type: String

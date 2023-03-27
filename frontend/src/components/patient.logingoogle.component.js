@@ -7,7 +7,6 @@ function LoginGoogle() {
     useEffect(() => {}, [isLoggedIn])
 
     function successResponse(response) {
-        console.log(response);
         window.localStorage.setItem("googleId", response.googleId);
         window.localStorage.setItem("token", response.tokenId)
         setIsLoggedIn(true);

@@ -21,7 +21,6 @@ const BookingSlots = (props) => {
           date: dateToPost
         }
       );
-      console.log(data);
       setdateId(data._id);
       setSlots(data.slots);
     };

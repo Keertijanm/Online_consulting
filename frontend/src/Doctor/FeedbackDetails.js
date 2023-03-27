@@ -41,7 +41,7 @@ const FeedbackDetails = () => {
 
 	return (<div>
 		<Navbar />
-		<div class="container mt-5 mb-5"
+		<div className="container mt-5 mb-5"
 			style={{
 				display: 'flex',
 				flexFlow: 'column',

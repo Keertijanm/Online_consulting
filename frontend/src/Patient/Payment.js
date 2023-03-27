@@ -90,12 +90,13 @@ const Payment = (props) => {
         slotId: slotId,
         dateId: dateId,
         doctorId: doctor._id,
+        refreshToken: localStorage.getItem("accessToken")
       }
     );
 
-    if (data.doctorEmail) {
-      createEvent(data._id, data.date + "T" + data.slotTime, data.doctorEmail);
-    }
+    // if (data.doctorEmail) {
+    //   createEvent(data._id, data.date + "T" + data.slotTime, data.doctorEmail);
+    // }
   };
 
   useEffect(() => {
@@ -103,24 +104,24 @@ const Payment = (props) => {
   }, []);
 
   const makePayment = async (token) => {
-    const { data } = await Axios.post(
-      `${process.env.REACT_APP_SERVER_URL}/patients/payment`,
-      {
-        token,
-        finalBalnce,
-      }
-    );
+    // const { data } = await Axios.post(
+    //   `${process.env.REACT_APP_SERVER_URL}/patients/payment`,
+    //   {
+    //     token,
+    //     finalBalnce,
+    //   }
+    // );
 
-    if (data) {
+    // if (data) {
       bookSlot();
       setFinalBalnce(0);
       toast("Appointment booked successfully", {
         type: "success"
       })
       history.push("/patient");
-    }
+    // }
 
-    console.log(data);
+    // console.log(data);
   };
 
   return (
@@ -145,7 +146,7 @@ const Payment = (props) => {
             <div className="container text-white">
               <div className="row">
                 <div className="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-xs-6 col-sm-6 col-md-6">
                       <address>
                         <strong>Elf Cafe</strong>
@@ -165,10 +166,10 @@ const Payment = (props) => {
                         <em>Receipt #: 34522677W</em>
                       </p>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="row">
                     <div className="text-center">
-                      <h1>Receipt</h1>
+                      <h1>Doctor Detail</h1>
                     </div>
                     <table className="table table-hover text-white">
                       <thead>
@@ -176,7 +177,7 @@ const Payment = (props) => {
                           <th>Doctor Name</th>
                           <th>Specialization</th>
 
-                          <th className="text-center">Total</th>
+                          {/* <th className="text-center">Total</th> */}
                         </tr>
                       </thead>
                       <tbody>
@@ -191,12 +192,12 @@ const Payment = (props) => {
                             {doctor.specialization}
                           </td>
 
-                          <td className="col-md-1 text-center">
+                          {/* <td className="col-md-1 text-center">
                             {doctor.feesPerSession}
-                          </td>
+                          </td> */}
                         </tr>
 
-                        <tr>
+                        {/* <tr>
                           <td> &nbsp; </td>
 
                           <td className="text-right">
@@ -215,8 +216,8 @@ const Payment = (props) => {
                               <strong>{0.18 * doctor.feesPerSession}</strong>
                             </p>
                           </td>
-                        </tr>
-                        <tr>
+                        </tr> */}
+                        {/* <tr>
                           <td> &nbsp; </td>
 
                           <td className="text-right">
@@ -229,10 +230,18 @@ const Payment = (props) => {
                               <strong>{finalBalnce}</strong>
                             </h4>
                           </td>
-                        </tr>
+                        </tr> */}
                       </tbody>
                     </table>
-                    <StripeCheckoutButton
+                    <button
+                        type="button"
+                        className="btn btn-success btn-lg btn-block"
+                        onClick={makePayment}
+                      >
+                        Submit&nbsp;&nbsp;&nbsp;
+                        <span className="glyphicon glyphicon-chevron-right" />
+                      </button>
+                    {/* <StripeCheckoutButton
                       stripeKey="pk_test_51IabQNSCj4BydkZ3VIEbtfIJoWfSESvGSia3mSOfCYPWiyGxNxyr42IRvpmi8f8WbnhzCYBIZMyshg540TErXG3500fbHzRzLc"
                       token={makePayment}
                       amount={finalBalnce * 100}
@@ -247,7 +256,7 @@ const Payment = (props) => {
                         Pay Now&nbsp;&nbsp;&nbsp;
                         <span className="glyphicon glyphicon-chevron-right" />
                       </button>
-                    </StripeCheckoutButton>
+                    </StripeCheckoutButton> */}
                   </div>
                 </div>
               </div>
